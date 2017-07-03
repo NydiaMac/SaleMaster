@@ -1,0 +1,2038 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package salemaster;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import modelos.Boleto;
+import modelos.Suburban;
+import servicios.Boleto_servicios;
+import servicios.Suburban_servicios;
+import servicios.Conexion;
+
+/**
+ *
+ * @author computacion
+ */
+public class Ventas extends javax.swing.JFrame {
+    
+    /**
+     * Creates new form Ventas
+     */
+    boolean Ocupado;
+    int c=0,i;
+    int[] Disponible = new int[17];
+    Suburban sub=new Suburban();
+    Boleto boleto = new Boleto();
+    Suburban_servicios suburban_service = new Suburban_servicios(); 
+    Boleto_servicios boleto_service = new Boleto_servicios();
+    /**
+     * Constructor de la clase que no recibe parametros.
+     */
+    public Ventas() {
+        initComponents();
+        Asiento_uno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_dos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_tres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_cuatro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_cinco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_seis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_siete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_ocho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_nueve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_diez.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_once.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_doce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_trece.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_catorce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_quince.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_dieciseis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        Asiento_diecisiete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+    }
+    /**
+     * Metodo que coloca cadenas vacias en los campos de Name y Seat.
+     */
+    public void limpiar(){
+        Name.setText("");
+        Seat.setText("");
+    }
+    /**
+     * Metodo que carga los datos de cada suburban(El estado actual de los ascientos).
+     * @param subs El parametro subs contiene la informacion del estado de los ascientos de la suburban que se quiere consultar.
+     */
+    public void CargarSub(Suburban subs){
+        if(subs.getAsiento1()==false){
+            Asiento_uno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        }else{
+            Asiento_uno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        }if(subs.getAsiento2()==false)    
+            Asiento_dos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_dos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento3()==false)
+            Asiento_tres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_tres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento4()==false)
+            Asiento_cuatro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_cuatro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento5()==false)
+            Asiento_cinco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_cinco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento6()==false)
+            Asiento_seis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_seis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento7()==false)
+            Asiento_siete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_siete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento8()==false)
+            Asiento_ocho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_ocho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento9()==false)
+            Asiento_nueve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_nueve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento10()==false)
+            Asiento_diez.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_diez.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento11()==false)
+            Asiento_once.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_once.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento12()==false)
+            Asiento_doce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_doce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento13()==false)
+            Asiento_trece.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_trece.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento14()==false)
+            Asiento_catorce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_catorce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento15()==false)
+            Asiento_quince.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_quince.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento16()==false)
+            Asiento_dieciseis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_dieciseis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(subs.getAsiento17()==false)
+            Asiento_diecisiete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg")));
+        else
+            Asiento_diecisiete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jSpinner1 = new javax.swing.JSpinner();
+        jPanel1 = new javax.swing.JPanel();
+        Panel_informacion = new javax.swing.JPanel();
+        Name = new java.awt.TextField();
+        Seat = new java.awt.TextField();
+        Nombre = new java.awt.Label();
+        Asiento_Asignado = new java.awt.Label();
+        Destino = new javax.swing.JComboBox<>();
+        Fecha = new javax.swing.JComboBox<>();
+        Hora = new javax.swing.JComboBox<>();
+        Nboletos = new javax.swing.JComboBox<>();
+        Estado_asiento = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        Nuevo = new javax.swing.JButton();
+        Cancelar = new javax.swing.JButton();
+        Completar_venta = new javax.swing.JButton();
+        Vehiculo = new javax.swing.JPanel();
+        Asiento_Conductor = new javax.swing.JButton();
+        Asiento_dos = new javax.swing.JButton();
+        Asiento_cinco = new javax.swing.JButton();
+        Asiento_ocho = new javax.swing.JButton();
+        Asiento_uno = new javax.swing.JButton();
+        Asiento_siete = new javax.swing.JButton();
+        Asiento_diecisiete = new javax.swing.JButton();
+        Asiento_once = new javax.swing.JButton();
+        Asiento_catorce = new javax.swing.JButton();
+        Asiento_quince = new javax.swing.JButton();
+        Asiento_nueve = new javax.swing.JButton();
+        Asiento_doce = new javax.swing.JButton();
+        Asiento_dieciseis = new javax.swing.JButton();
+        Asiento_diez = new javax.swing.JButton();
+        Asiento_trece = new javax.swing.JButton();
+        Asiento_seis = new javax.swing.JButton();
+        Asiento_cuatro = new javax.swing.JButton();
+        Asiento_tres = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Sale Master - Ventas");
+        setAutoRequestFocus(false);
+        setBackground(java.awt.Color.orange);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(254, 254, 254));
+
+        Panel_informacion.setBackground(new java.awt.Color(254, 254, 254));
+        Panel_informacion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        Name.setBackground(new java.awt.Color(254, 254, 254));
+
+        Seat.setBackground(new java.awt.Color(254, 254, 254));
+        Seat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                SeatKeyTyped(evt);
+            }
+        });
+
+        Nombre.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        Nombre.setText("Nombre:");
+
+        Asiento_Asignado.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        Asiento_Asignado.setName(""); // NOI18N
+        Asiento_Asignado.setText("Asiento:");
+
+        Destino.setBackground(java.awt.Color.white);
+        Destino.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Destino", "Oaxaca", "Nochixtlan", "Tamazulapan" }));
+        Destino.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                DestinoItemStateChanged(evt);
+            }
+        });
+
+        Fecha.setBackground(java.awt.Color.white);
+        Fecha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fecha", "04/05/17", "05/05/17", "06/05/17" }));
+        Fecha.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                FechaItemStateChanged(evt);
+            }
+        });
+
+        Hora.setBackground(java.awt.Color.white);
+        Hora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hora", "8:00", "10:00", "12:00" }));
+        Hora.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                HoraItemStateChanged(evt);
+            }
+        });
+
+        Nboletos.setBackground(new java.awt.Color(254, 254, 254));
+        Nboletos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "# de boletos", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", " " }));
+        Nboletos.setMinimumSize(new java.awt.Dimension(129, 27));
+
+        javax.swing.GroupLayout Panel_informacionLayout = new javax.swing.GroupLayout(Panel_informacion);
+        Panel_informacion.setLayout(Panel_informacionLayout);
+        Panel_informacionLayout.setHorizontalGroup(
+            Panel_informacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_informacionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Panel_informacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel_informacionLayout.createSequentialGroup()
+                        .addComponent(Nboletos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Destino, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Hora, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Panel_informacionLayout.createSequentialGroup()
+                        .addComponent(Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Name, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(96, 96, 96)
+                        .addComponent(Asiento_Asignado, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Seat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        Panel_informacionLayout.setVerticalGroup(
+            Panel_informacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_informacionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Panel_informacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(Panel_informacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(Asiento_Asignado, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                        .addComponent(Name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Seat, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(Panel_informacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Destino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Fecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nboletos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
+        );
+
+        Estado_asiento.setBackground(new java.awt.Color(254, 254, 254));
+        Estado_asiento.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        jLabel1.setText("Disponible");
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Azul.jpeg"))); // NOI18N
+        jLabel2.setText("Reservado");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg"))); // NOI18N
+        jLabel3.setText("Ocupado");
+
+        jLabel4.setBackground(new java.awt.Color(197, 194, 191));
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Gris.jpeg"))); // NOI18N
+        jLabel4.setText("Conductor");
+
+        javax.swing.GroupLayout Estado_asientoLayout = new javax.swing.GroupLayout(Estado_asiento);
+        Estado_asiento.setLayout(Estado_asientoLayout);
+        Estado_asientoLayout.setHorizontalGroup(
+            Estado_asientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Estado_asientoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        Estado_asientoLayout.setVerticalGroup(
+            Estado_asientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Estado_asientoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Estado_asientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        Nuevo.setBackground(java.awt.Color.white);
+        Nuevo.setText("Nuevo");
+        Nuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NuevoActionPerformed(evt);
+            }
+        });
+
+        Cancelar.setBackground(java.awt.Color.white);
+        Cancelar.setText("Cancelar");
+        Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelarActionPerformed(evt);
+            }
+        });
+
+        Completar_venta.setBackground(java.awt.Color.white);
+        Completar_venta.setText("Completar venta");
+        Completar_venta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Completar_ventaActionPerformed(evt);
+            }
+        });
+
+        Vehiculo.setBackground(new java.awt.Color(253, 251, 251));
+        Vehiculo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        Asiento_Conductor.setBackground(java.awt.Color.white);
+        Asiento_Conductor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Gris.jpeg"))); // NOI18N
+        Asiento_Conductor.setText("c");
+
+        Asiento_dos.setBackground(java.awt.Color.white);
+        Asiento_dos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_dos.setText("2");
+        Asiento_dos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_dosMouseClicked(evt);
+            }
+        });
+
+        Asiento_cinco.setBackground(java.awt.Color.white);
+        Asiento_cinco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_cinco.setText("5");
+        Asiento_cinco.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_cincoMouseClicked(evt);
+            }
+        });
+
+        Asiento_ocho.setBackground(java.awt.Color.white);
+        Asiento_ocho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_ocho.setText("8");
+        Asiento_ocho.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_ochoMouseClicked(evt);
+            }
+        });
+
+        Asiento_uno.setBackground(new java.awt.Color(254, 254, 254));
+        Asiento_uno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_uno.setText("1");
+        Asiento_uno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_unoMouseClicked(evt);
+            }
+        });
+
+        Asiento_siete.setBackground(java.awt.Color.white);
+        Asiento_siete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_siete.setText("7");
+        Asiento_siete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_sieteMouseClicked(evt);
+            }
+        });
+
+        Asiento_diecisiete.setBackground(java.awt.Color.white);
+        Asiento_diecisiete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_diecisiete.setText("17");
+        Asiento_diecisiete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_diecisieteMouseClicked(evt);
+            }
+        });
+
+        Asiento_once.setBackground(java.awt.Color.white);
+        Asiento_once.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_once.setText("11");
+        Asiento_once.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_onceMouseClicked(evt);
+            }
+        });
+
+        Asiento_catorce.setBackground(java.awt.Color.white);
+        Asiento_catorce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_catorce.setText("14");
+        Asiento_catorce.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_catorceMouseClicked(evt);
+            }
+        });
+
+        Asiento_quince.setBackground(java.awt.Color.white);
+        Asiento_quince.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_quince.setText("15");
+        Asiento_quince.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_quinceMouseClicked(evt);
+            }
+        });
+
+        Asiento_nueve.setBackground(java.awt.Color.white);
+        Asiento_nueve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_nueve.setText("9");
+        Asiento_nueve.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_nueveMouseClicked(evt);
+            }
+        });
+
+        Asiento_doce.setBackground(java.awt.Color.white);
+        Asiento_doce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_doce.setText("12");
+        Asiento_doce.setMaximumSize(new java.awt.Dimension(74, 62));
+        Asiento_doce.setMinimumSize(new java.awt.Dimension(74, 62));
+        Asiento_doce.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_doceMouseClicked(evt);
+            }
+        });
+
+        Asiento_dieciseis.setBackground(java.awt.Color.white);
+        Asiento_dieciseis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_dieciseis.setText("16");
+        Asiento_dieciseis.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_dieciseisMouseClicked(evt);
+            }
+        });
+
+        Asiento_diez.setBackground(java.awt.Color.white);
+        Asiento_diez.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_diez.setText("10");
+        Asiento_diez.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_diezMouseClicked(evt);
+            }
+        });
+
+        Asiento_trece.setBackground(java.awt.Color.white);
+        Asiento_trece.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_trece.setText("13");
+        Asiento_trece.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_treceMouseClicked(evt);
+            }
+        });
+
+        Asiento_seis.setBackground(java.awt.Color.white);
+        Asiento_seis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_seis.setText("6");
+        Asiento_seis.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_seisMouseClicked(evt);
+            }
+        });
+
+        Asiento_cuatro.setBackground(java.awt.Color.white);
+        Asiento_cuatro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_cuatro.setText("4");
+        Asiento_cuatro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_cuatroMouseClicked(evt);
+            }
+        });
+
+        Asiento_tres.setBackground(java.awt.Color.white);
+        Asiento_tres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Verde.jpeg"))); // NOI18N
+        Asiento_tres.setText("3");
+        Asiento_tres.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Asiento_tresMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout VehiculoLayout = new javax.swing.GroupLayout(Vehiculo);
+        Vehiculo.setLayout(VehiculoLayout);
+        VehiculoLayout.setHorizontalGroup(
+            VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(VehiculoLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Asiento_dos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Asiento_uno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Asiento_Conductor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Asiento_cuatro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Asiento_tres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Asiento_seis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Asiento_siete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Asiento_cinco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(Asiento_diez, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                    .addComponent(Asiento_nueve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Asiento_ocho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Asiento_once)
+                    .addComponent(Asiento_doce, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Asiento_trece))
+                .addGap(18, 18, 18)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Asiento_quince)
+                    .addComponent(Asiento_catorce)
+                    .addComponent(Asiento_dieciseis)
+                    .addComponent(Asiento_diecisiete))
+                .addGap(35, 35, 35))
+        );
+        VehiculoLayout.setVerticalGroup(
+            VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(VehiculoLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Asiento_catorce)
+                    .addComponent(Asiento_once)
+                    .addComponent(Asiento_ocho)
+                    .addComponent(Asiento_cinco))
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(VehiculoLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(Asiento_quince)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Asiento_dieciseis)
+                            .addComponent(Asiento_doce, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Asiento_nueve)
+                            .addComponent(Asiento_seis)
+                            .addComponent(Asiento_tres)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, VehiculoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Asiento_dos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Asiento_uno)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(VehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Asiento_diecisiete)
+                    .addComponent(Asiento_trece)
+                    .addComponent(Asiento_siete)
+                    .addComponent(Asiento_cuatro)
+                    .addComponent(Asiento_Conductor, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Asiento_diez))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Nuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(Completar_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(Cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(Vehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Panel_informacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Estado_asiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Panel_informacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Vehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Estado_asiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Cancelar)
+                    .addComponent(Completar_venta)
+                    .addComponent(Nuevo))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>                        
+
+    
+   /**
+    * Metodo que llena el campo de asciento con el numero 1 tras dar click en el boton con el asiento numero 1.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_unoMouseClicked(java.awt.event.MouseEvent evt) {                                         
+        // TODO add your handling code here:
+        //Asiento_uno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+            if(sub.getAsiento1()==true){
+                JOptionPane.showMessageDialog(this,"Aciento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("1");
+            }
+    }                                        
+    /**
+     * Metodo que cancela la venta tras presionar el boton cancelar, Este solo aplica si aun no se vende el boleto.
+     * Este metodo aplica el metodo limpiar()
+     * @param evt El parametro evt, es un objeto de la clase ActionEvent que hace saber al sistema cuando se selecciona el boton Cancelar.
+     */
+    private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this,"Esta seguro que desea cancelar la venta?", "Mensaje", 1);
+        this.dispose();
+        new Menu().setVisible(true);
+    }                                        
+    /**
+     * Metodo para hacer una nueva venta.
+     * Este metodo utiliza el metodo limpiar()
+     * @param evt El parametro evt, es un objeto de la clase ActionEvent que hace saber al sistema cuando se selecciona el Nuevo. 
+     */
+    private void NuevoActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        // TODO add your handling code here:
+        limpiar();
+        
+    }                                     
+    /**
+     * Metodo que manda la orden al sistema de guardar los datos de la venta del boleto.
+     * @param evt El parametro evt, es un objeto de la clase ActionEvent que hace saber al sistema cuando se selecciona el Completar.
+     */
+    private void Completar_ventaActionPerformed(java.awt.event.ActionEvent evt) {                                                
+        // TODO add your handling code here:
+        if(validar()){
+            this.vender();
+        }else{
+            JOptionPane.showMessageDialog(this, "Hay campos incompletos.");
+        }
+    }                                               
+    /**
+     * Metodo que verifica que los campos esten llenos.
+     * @return devuelve true si estan todos llenos y false en caso de que alguno no este lleno.
+     */
+    private Boolean validar(){
+        Boolean validado = true;
+        String nombre = Name.getText();
+        String aux = Seat.getText();
+        String nboletos = Nboletos.getSelectedItem().toString();
+        String destino = Destino.getSelectedItem().toString();
+        String fecha = Fecha.getSelectedItem().toString();
+        String hora = Hora.getSelectedItem().toString();
+    
+        if(!nombre.trim().equals("") && !aux.trim().equals("") && !nboletos.trim().equals("# de boletos") && !destino.trim().equals("Destino")&& !fecha.trim().equals("Fecha") && !hora.trim().equals("Hora")){
+            try{
+                Integer seat = Integer.parseInt(aux.trim());
+            }catch(NumberFormatException ex){
+                validado = false;
+            }
+        }else{
+            validado = false;
+        }
+        return validado;
+    }
+    /**
+     * Metodo que guarda la informacion obtenida de los campos del boleto vendido en la base de datos.
+     */
+    private void vender(){
+        String nombre = Name.getText();
+        String aux = Seat.getText();
+        Integer seat = Integer.parseInt(aux);
+        String nboletos = Nboletos.getSelectedItem().toString();
+        String destino = Destino.getSelectedItem().toString();
+        String fecha = Fecha.getSelectedItem().toString();
+        String hora = Hora.getSelectedItem().toString();
+
+        this.boleto.setPasajero(nombre);
+        this.boleto.setNo_Asiento(seat);
+        this.boleto.setDestino(destino);
+        this.boleto.setFecha(fecha);
+        this.boleto.setHora(hora);
+        this.boleto.setID_suburban(sub.getID_suburban());
+        
+        try{
+            this.boleto_service.guardar(Conexion.obtener(), this.boleto);
+            marcarAsiento(this.boleto.getNo_Asiento());
+            this.suburban_service.guardar(Conexion.obtener(), sub);
+            Ventas.this.dispose();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Ha surgido un error y no se ha podido guardar la venta del boleto.");
+        }catch(ClassNotFoundException ex){
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Ha surgido un error y no se ha podido guardar la venta del boleto.");
+        }
+    }
+    /**
+     * Metodo que cambia el estado del asiento que se vende y lo marca para que este ya no se no se permita vender otra vez.
+     * @param asiento El parametro asciento es un entero con el numero de asciento que se marcara como vendido.
+     */
+    private void marcarAsiento(Integer asiento){
+        switch(asiento){
+            case 1:
+                this.sub.setAsiento1(true);
+                break;
+            case 2:
+                this.sub.setAsiento2(true);
+                break;
+            case 3:
+                this.sub.setAsiento3(true);
+                break;
+            case 4:
+                this.sub.setAsiento4(true);
+                break;
+            case 5:
+                this.sub.setAsiento5(true);
+                break;
+            case 6:
+                this.sub.setAsiento6(true);
+                break;
+            case 7:
+                this.sub.setAsiento7(true);
+                break;
+            case 8:
+                this.sub.setAsiento8(true);
+                break;
+            case 9:
+                this.sub.setAsiento9(true);
+                break;
+            case 10:
+                this.sub.setAsiento10(true);
+                break;
+            case 11:
+                this.sub.setAsiento11(true);
+                break;
+            case 12:
+                this.sub.setAsiento12(true);
+                break;
+            case 13:
+                this.sub.setAsiento13(true);
+                break;
+            case 14:
+                this.sub.setAsiento14(true);
+                break;
+            case 15:
+                this.sub.setAsiento15(true);
+                break;
+            case 16:
+                this.sub.setAsiento16(true);
+                break;
+            case 17:
+                this.sub.setAsiento17(true);
+                break;
+        }
+    }
+   /**
+    * Metodo que llena el campo de asciento con el numero 2 tras dar click en el boton con el asiento numero 2.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_dosMouseClicked(java.awt.event.MouseEvent evt) {                                         
+        // TODO add your handling code here:
+        //Asiento_dos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+            if(sub.getAsiento2()==true){
+                JOptionPane.showMessageDialog(this,"Aciento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("2");
+            }        
+    }                                        
+   /**
+    * Metodo que llena el campo de asciento con el numero 3 tras dar click en el boton con el asiento numero 3.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_tresMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        // TODO add your handling code here:
+        //Asiento_tres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(sub.getAsiento3()==true){
+                JOptionPane.showMessageDialog(this,"Aciento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("3");
+            }
+    }                                         
+   /**
+    * Metodo que llena el campo de asciento con el numero 4 tras dar click en el boton con el asiento numero 4.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_cuatroMouseClicked(java.awt.event.MouseEvent evt) {                                            
+        // TODO add your handling code here:
+        //Asiento_cuatro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento4()==true){
+                JOptionPane.showMessageDialog(this,"Aciento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("4");
+            }
+    }                                           
+   /**
+    * Metodo que llena el campo de asciento con el numero 5 tras dar click en el boton con el asiento numero 5.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_cincoMouseClicked(java.awt.event.MouseEvent evt) {                                           
+        // TODO add your handling code here:
+        //Asiento_cinco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento5()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("5");
+            }
+    }                                          
+   /**
+    * Metodo que llena el campo de asciento con el numero 6 tras dar click en el boton con el asiento numero 6.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_seisMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        // TODO add your handling code here:
+        //Asiento_seis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento6()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("6");
+            }
+    }                                         
+   /**
+    * Metodo que llena el campo de asciento con el numero 7 tras dar click en el boton con el asiento numero 7.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_sieteMouseClicked(java.awt.event.MouseEvent evt) {                                           
+        // TODO add your handling code here:
+        //Asiento_siete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento7()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+         else{
+                Seat.setText("7");
+            }
+    }                                          
+   /**
+    * Metodo que llena el campo de asciento con el numero 8 tras dar click en el boton con el asiento numero 8.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_ochoMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        // TODO add your handling code here:
+       //Asiento_ocho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+        if(sub.getAsiento8()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("8");
+            }
+    }                                         
+   /**
+    * Metodo que llena el campo de asciento con el numero 9 tras dar click en el boton con el asiento numero 9.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_nueveMouseClicked(java.awt.event.MouseEvent evt) {                                           
+        // TODO add your handling code here:
+        //Asiento_nueve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento9()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("9");
+            }
+    }                                          
+   /**
+    * Metodo que llena el campo de asciento con el numero 10 tras dar click en el boton con el asiento numero 10.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_diezMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        // TODO add your handling code here:
+        //Asiento_diez.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento10()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("10");
+            }
+    }                                         
+   /**
+    * Metodo que llena el campo de asciento con el numero 11 tras dar click en el boton con el asiento numero 11.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_onceMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        // TODO add your handling code here:
+        //Asiento_once.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento11()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("11");
+            }
+    }                                         
+   /**
+    * Metodo que llena el campo de asciento con el numero 12 tras dar click en el boton con el asiento numero 12.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_doceMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        // TODO add your handling code here:
+        //Asiento_doce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento12()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("12");
+            }
+    }                                         
+   /**
+    * Metodo que llena el campo de asciento con el numero 13 tras dar click en el boton con el asiento numero 13.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_treceMouseClicked(java.awt.event.MouseEvent evt) {                                           
+        // TODO add your handling code here:
+        //Asiento_trece.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento13()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("13");
+            }
+    }                                          
+   /**
+    * Metodo que llena el campo de asciento con el numero 14 tras dar click en el boton con el asiento numero 14.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_catorceMouseClicked(java.awt.event.MouseEvent evt) {                                             
+        // TODO add your handling code here:
+        //Asiento_catorce.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento14()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("14");
+            }
+    }                                            
+   /**
+    * Metodo que llena el campo de asciento con el numero 15 tras dar click en el boton con el asiento numero 15.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_quinceMouseClicked(java.awt.event.MouseEvent evt) {                                            
+        // TODO add your handling code here:
+        //Asiento_quince.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento15()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("15");
+            }
+    }                                           
+   /**
+    * Metodo que llena el campo de asciento con el numero 16 tras dar click en el boton con el asiento numero 16.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_dieciseisMouseClicked(java.awt.event.MouseEvent evt) {                                               
+        // TODO add your handling code here:
+        //Asiento_dieciseis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento16()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("16");
+            }
+    }                                              
+   /**
+    * Metodo que llena el campo de asciento con el numero 17 tras dar click en el boton con el asiento numero 17.
+    * @param evt El parametro evt, es un objeto de la clase MouseEvent que hace saber al sistema cuando se da click en el boton.
+    */ 
+    private void Asiento_diecisieteMouseClicked(java.awt.event.MouseEvent evt) {                                                
+        // TODO add your handling code here:
+        //Asiento_diecisiete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salemaster/Rojo.jpeg")));
+         if(sub.getAsiento17()==true){
+                JOptionPane.showMessageDialog(this,"Asiento no disponible", "Mensaje", 2);    
+            }
+            else{
+                Seat.setText("17");
+            }
+    }                                               
+    /**
+     * Metodo que verifica que en el campo asciento solo se puedan ingresar numeros.
+     * @param evt El parametro evt, es un objeto de la clase KeyEvent que hace saber al usuario cuando una tecla es presionada.
+     */
+    private void SeatKeyTyped(java.awt.event.KeyEvent evt) {                              
+        // TODO add your handling code here:
+        int k=(int)evt.getKeyChar();
+        if (k >= 97 && k <= 122 || k>=65 && k<=90){
+            evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+               JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
+        }
+        if(k==241 || k==209){
+            evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+            JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
+        }
+        if(k==10){
+            Seat.transferFocus();
+        }
+    }                             
+    /**
+     * Metodo que carga el estado de una suburban segun el destino,fecha,hora en ese orden. 
+     * @param evt El parametro evt es un objeto de la clase ItemEvent el cual hace saber al sistema cuando un item de la lista es seleccionado.
+     */
+    private void DestinoItemStateChanged(java.awt.event.ItemEvent evt) {                                         
+        // TODO add your handling code here:
+        switch (Destino.getSelectedItem().toString().trim()) {
+            case "Oaxaca":
+                switch(Fecha.getSelectedItem().toString().trim()){
+                    case "04/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 1);
+                                     CargarSub(sub);
+                                    
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 2);
+                                     CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 3);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "05/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 4);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 5);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 6);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "06/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 7);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 8);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 9);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "Nochixtlan":
+                switch(Fecha.getSelectedItem().toString().trim()){
+                    case "04/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 10);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 11);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 12);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "05/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 13);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 14);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 15);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "06/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 16);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 17);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 18);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "Tamazulapan":
+                switch(Fecha.getSelectedItem().toString().trim()){
+                    case "04/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 19);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 20);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 21);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "05/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 22);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 23);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 24);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "06/05/17":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 25);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 26);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 27);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }                                        
+    /**
+     * Metodo que carga el estado de una suburban segun el fecha,destino,hora en ese orden. 
+     * @param evt El parametro evt es un objeto de la clase ItemEvent el cual hace saber al sistema cuando un item de la lista es seleccionado.
+     */
+    private void FechaItemStateChanged(java.awt.event.ItemEvent evt) {                                       
+        // TODO add your handling code here:
+        switch (Fecha.getSelectedItem().toString().trim()) {
+            case "04/02/17":
+                switch(Destino.getSelectedItem().toString().trim()){
+                    case "Oaxaca":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 1);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 2);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 3);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Nochixtlan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 10);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 11);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 12);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Tamazulapan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 19);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 20);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 21);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "05/05/17":
+                switch(Destino.getSelectedItem().toString().trim()){
+                    case "Oaxaca":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 4);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 5);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 6);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Nochixtlan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 13);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 14);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 15);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Tamazulapan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 22);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 23);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 24);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "06/05/17":
+                switch(Destino.getSelectedItem().toString().trim()){
+                    case "Oaxaca":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 7);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 8);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 9);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Nochixtlan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 16);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 17);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 18);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Tamazulapan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "8:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 25);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "10:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 26);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "12:00":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 27);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }                                      
+    /**
+     * Metodo que carga el estado de una suburban segun el hora,destino,fecha en ese orden. 
+     * @param evt El parametro evt es un objeto de la clase ItemEvent el cual hace saber al sistema cuando un item de la lista es seleccionado.
+     */
+    private void HoraItemStateChanged(java.awt.event.ItemEvent evt) {                                      
+        // TODO add your handling code here:
+        switch (Hora.getSelectedItem().toString().trim()) {
+            case "8:00":
+                switch(Destino.getSelectedItem().toString().trim()){
+                    case "Oaxaca":
+                        switch(Fecha.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 1);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                    sub = suburban_service.recuperarPorId(Conexion.obtener(), 4);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 7);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Nochixtlan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 10);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 13);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 16);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Tamazulapan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 19);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 22);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 25);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "10:00":
+                switch(Destino.getSelectedItem().toString().trim()){
+                    case "Oaxaca":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 2);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 5);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 8);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Nochixtlan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 11);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 14);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 17);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Tamazulapan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 20);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 23);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 26);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "12:00":
+                switch(Destino.getSelectedItem().toString().trim()){
+                    case "Oaxaca":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 3);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 6);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 9);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Nochixtlan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 12);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 15);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                     sub=suburban_service.recuperarPorId(Conexion.obtener(), 18);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    case "Tamazulapan":
+                        switch(Hora.getSelectedItem().toString().trim()){
+                            case "04/05/17":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 21);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "05/05/17":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 24);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            case "06/05/17":
+                                try {
+                                    sub=suburban_service.recuperarPorId(Conexion.obtener(), 27);
+                                    CargarSub(sub);
+                                } catch (SQLException | ClassNotFoundException ex) {
+                                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                break;
+                            default:
+                                break; 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }                                     
+    /**
+     * Metodo que muestra el un Menu cuando la ventana es cerrada.
+     * @param evt El parametro evt es un objeto de la clase WindowEvent que hace saber al sistema cuando la ventana se cierra.
+     */
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {                                   
+        // TODO add your handling code here:
+        this.dispose();
+        new Menu().setVisible(true);
+    }                                  
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Ventas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Ventas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Ventas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Ventas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Ventas().setVisible(true);
+            }
+        });
+    }
+    // Variables declaration - do not modify                     
+    private java.awt.Label Asiento_Asignado;
+    private javax.swing.JButton Asiento_Conductor;
+    private javax.swing.JButton Asiento_catorce;
+    private javax.swing.JButton Asiento_cinco;
+    private javax.swing.JButton Asiento_cuatro;
+    private javax.swing.JButton Asiento_dieciseis;
+    private javax.swing.JButton Asiento_diecisiete;
+    private javax.swing.JButton Asiento_diez;
+    private javax.swing.JButton Asiento_doce;
+    private javax.swing.JButton Asiento_dos;
+    private javax.swing.JButton Asiento_nueve;
+    private javax.swing.JButton Asiento_ocho;
+    private javax.swing.JButton Asiento_once;
+    private javax.swing.JButton Asiento_quince;
+    private javax.swing.JButton Asiento_seis;
+    private javax.swing.JButton Asiento_siete;
+    private javax.swing.JButton Asiento_trece;
+    private javax.swing.JButton Asiento_tres;
+    private javax.swing.JButton Asiento_uno;
+    private javax.swing.JButton Cancelar;
+    private javax.swing.JButton Completar_venta;
+    public static javax.swing.JComboBox<String> Destino;
+    private javax.swing.JPanel Estado_asiento;
+    public static javax.swing.JComboBox<String> Fecha;
+    public static javax.swing.JComboBox<String> Hora;
+    public static java.awt.TextField Name;
+    public static javax.swing.JComboBox<String> Nboletos;
+    private java.awt.Label Nombre;
+    private javax.swing.JButton Nuevo;
+    private javax.swing.JPanel Panel_informacion;
+    public static java.awt.TextField Seat;
+    private javax.swing.JPanel Vehiculo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner jSpinner1;
+    // End of variables declaration                   
+}
+
